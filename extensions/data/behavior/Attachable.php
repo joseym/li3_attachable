@@ -45,7 +45,7 @@ use li3_attachable\extensions\Interpolation;
  * }
  * }}}
  *
- * @uses li3_attachable\extensions\Interpolation::run
+ * @see li3_attachable\extensions\Interpolation::run
  */
 class Attachable {
 
@@ -61,8 +61,8 @@ class Attachable {
         $attachments = array();
         foreach ($config as $field => $info) {
             $attachments[$field] = $info += array(
-                'path' => '{:root}/webroot/files/{:id}/{:filename}',
-                'url' => '/files/{:id}/{:filename}',
+                'path' => '{:root}/webroot/files/{:model}/{:id}/{:filename}',
+                'url' => '/files/{:model}/{:id}/{:filename}',
                 'default' => '/img/missing.png'
             );
         }
@@ -101,7 +101,7 @@ class Attachable {
             // Save the object
             $result = $chain->next($self, $params, $chain);
 
-            // Save succeeded, upload and delete files
+            // If save succeeded, delete old and upload new files
             if ($result) {
                 foreach ($delete as $field => $name) {
                     $static::_deleteAttachment($entity, $field, $name, $attachments[$field]);
