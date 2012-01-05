@@ -58,6 +58,7 @@ class Interpolation {
      *
      * * `{:root}` ~ Path to the default library.
      * * `{:id}` ~ Entity id.
+     * * `{:model}` ~ Lowercased name of the model, without namespaces.
      * * `{:filename}` ~ Name of the file with extension.
      *
      * @param string $name Name of the interpolation.
@@ -80,9 +81,11 @@ class Interpolation {
      * @see lithium\core\Libraries::get
      */
     public static function run($string, $entity, $field, array $data = array()) {
+        $parts = explode('\\', $entity->model());
         $data += array(
             'id'       => $entity->id,
             'root'     => Libraries::get(true, 'path'),
+            'model'    => strtolower(array_pop($parts)),
             'filename' => $entity->{$field}
         );
         foreach (static::$_interpolation as $name => $closure) {
