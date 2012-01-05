@@ -1,6 +1,6 @@
 <?php
 /**
- * li3_attachable: the most rad li3 file uploader
+ * li3_attachable: the most rad li3 file uploader.
  *
  * @copyright     Copyright 2012, Tobias Sandelius (http://sandelius.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License

@@ -1,6 +1,6 @@
 <?php
 /**
- * li3_attachable: the most rad li3 file uploader
+ * li3_attachable: the most rad li3 file uploader.
  *
  * @copyright     Copyright 2012, Tobias Sandelius (http://sandelius.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
@@ -9,6 +9,7 @@
 namespace li3_attachable\extensions\data\behavior;
 
 use RuntimeException;
+use lithium\util\Inflector;
 use li3_attachable\extensions\Interpolation;
 
 class Attachable {
@@ -43,16 +44,19 @@ class Attachable {
 
             $export = $entity->export();
             $upload = array();
+            $delete = array();
             foreach ($attachments as $field => $info) {
                 if ($self::hasField($field)) {
                     $value = $entity->{$field};
-                    if (is_array($value)) {
+                    if (is_array($value) && !empty($value['name'])) {
+                        $value['name'] = str_replace(array(' '), array('_'), strtolower($value['name']));
                         $static::_prepareValidation($model, $field, $value);
                         $delete[$field]   = $export['data'][$field];
                         $upload[$field]   = $value;
                         $entity->{$field} = $value['name'];
-                    }
-                    if (empty($export['update'][$field]) && !empty($export['data'][$field])) {
+                    } elseif (is_array($value) && empty($value['name'])) {
+                        $entity->{$field} = $export['data'][$field];
+                    } elseif (empty($value) && !empty($export['data'][$field])) {
                         $delete[$field] = $export['data'][$field];
                     }
                 }
@@ -124,7 +128,7 @@ class Attachable {
     /**
      * Prepare the validation rules by adding the attachment information.
      *
-     * @param object $entity
+     * @param object $model
      * @param string $field
      * @param array $info
      * @return void
