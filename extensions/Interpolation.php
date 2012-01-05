@@ -12,6 +12,26 @@ use Closure;
 use lithium\util\String;
 use lithium\core\Libraries;
 
+/**
+ * The `Interpolation` class allow us to create dynamic paths and urls for our model
+ * attachments. It's really easy to create your own custom interpolations.
+ *
+ * Here we'll add the, slugified, called class name as a dynamic option:
+ *
+ * {{{
+ * use li3_attachable\extensions\Interpolation;
+ * use lithium\util\Inflector;
+ *
+ * Interpolation::add('class', function($entity, $field) {
+ *    return strtolower(Inflector::slug(get_class($entity)));
+ * });
+ * }}}
+ *
+ * After the above we can use `{:class}` in our attachment configurations.
+ *
+ * @see lithium\util\String::insert
+ * @see lithium\core\Libraries::get
+ */
 class Interpolation {
 
     /**
