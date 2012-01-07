@@ -10,3 +10,5 @@
  * Include our custom validation rules.
  */
 require __DIR__ . '/bootstrap/rules.php';
+
+?>
